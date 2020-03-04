@@ -2,10 +2,14 @@
 session_start();
 require_once '../../config/utils.php';
 checkAdminLoggedIn();
+$keyword = isset($_GET['keyword']) == true ? $_GET['keyword'] : "";
+$getfoodTypesQuery = "select t.* from types t";
 
-$getfoodTypesQuery = "select * from types";
+if($keyword !== ""){
+    $getfoodTypesQuery .= " where (t.name like '%$keyword%')";
+}
+
 $foodTypes = queryExecute($getfoodTypesQuery, true);
-// dd($foodTypes);
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +52,19 @@ $foodTypes = queryExecute($getfoodTypesQuery, true);
             <section class="content">
                 <div class="container-fluid">
                     <!-- Small boxes (Stat box) -->
-
+                    <div class="col-md-10 col-offset-1">
+                        <!-- Filter  -->
+                        <form action="" method="get">
+                            <div class="form-row">
+                                <div class="form-group col-6">
+                                    <input type="text" value="<?php echo $keyword?>" class="form-control" name="keyword" placeholder="Nhập loại thực phẩm ...">
+                                </div>
+                                <div class="form-group col-2">
+                                    <button type="submit" class="btn btn-success">Tìm kiếm</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
 
                     <div class="col-12">
                         <div class="card">

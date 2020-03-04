@@ -2,9 +2,10 @@
 session_start();
 require_once '../../config/utils.php';
 checkAdminLoggedIn();
+$keyword = isset($_GET['keyword']) == true ? $_GET['keyword'] : "";
 
-$getplacesTypesQuery = "select * from places  ";
-$places = queryExecute($getplacesTypesQuery, true);
+$getplacesTypesQuery = "select p.* from places p";
+
 
 // $getVehiclesQuery = "select v.*,
 // 				            vt.`name` as type_name
@@ -14,6 +15,11 @@ $places = queryExecute($getplacesTypesQuery, true);
 //                     where vt.status = 1";
 // $vehicles = queryExecute($getVehiclesQuery, true);
 
+if ($keyword !== ""){
+    $getplacesTypesQuery .= " where p.name like '%$keyword%'";
+}
+
+$places = queryExecute($getplacesTypesQuery, true);
 ?>
 
 <!DOCTYPE html>
@@ -55,6 +61,19 @@ $places = queryExecute($getplacesTypesQuery, true);
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+                    <div class="col-md-10 col-offset-1">
+                        <!-- Filter  -->
+                        <form action="" method="get">
+                            <div class="form-row">
+                                <div class="form-group col-6">
+                                    <input type="text" value="<?php echo $keyword?>" class="form-control" name="keyword" placeholder="Nhập địa điểm ...">
+                                </div>
+                                <div class="form-group col-2">
+                                    <button type="submit" class="btn btn-success">Tìm kiếm</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
