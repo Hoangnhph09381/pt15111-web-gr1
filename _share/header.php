@@ -3,8 +3,8 @@
         <div class="directify_fn_header">
             <div class="header">
                 <div class="directify_fn_header_logo">
-                    <a class="dark" href="index-2.html"><img src="<?= THEME_ASSET_URL ?>img/logo-dark.png" alt="" /></a>
-                    <a class="light" href="index-2.html"><img src="<?= THEME_ASSET_URL ?>img/logo-light.png" alt="" /></a>
+                    <a class="dark" href="<?= BASE_URL. 'index.php' ?>"><img src="<?= THEME_ASSET_URL ?>img/logo-dark.png" alt="" /></a>
+                    <a class="light" href="<?= BASE_URL . 'index.php' ?>"><img src="<?= THEME_ASSET_URL ?>img/logo-light.png" alt="" /></a>
                 </div>
                 <div class="directify_fn_header_search">
                     <a href="#">
@@ -69,7 +69,7 @@
                                     <?php if($_SESSION[AUTH]['role_id']<=2): ?>
                                         <li><a href="<?= ADMIN_URL . 'dashboard/index.php'?>">Admin</a></li>
                                     <?php endif;?>
-                                    <li><a href="#">Edit profile</a></li>
+                                    <li><a href="<?= BASE_URL . 'edit-profile.php'?>">Edit profile</a></li>
                                     <li><a href="<?= BASE_URL . 'logout.php' ?>">Logout</a></li>
                                 </ul>
                             </li>

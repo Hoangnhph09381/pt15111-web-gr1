@@ -55,8 +55,15 @@ function checkAdminLoggedIn(){
         die;
     }
     // 2 - giá trị của cột role_id = 2
-    if($_SESSION[AUTH]['role_id'] > 2){
+    if($_SESSION[AUTH]['role_id'] <= 2){
         header('location: ' . BASE_URL . 'login.php?msg=Bạn không có quyền truy cập');
+        die;
+    }
+}
+
+function checkLoggedIn(){
+    if(!isset($_SESSION[AUTH]) || $_SESSION[AUTH] == null || count($_SESSION[AUTH]) == 0){
+        header('location: ' . BASE_URL . 'login.php?msg=Hãy đăng nhập');
         die;
     }
 }

@@ -1,6 +1,7 @@
 <?php
 // bắt đầu sử dụng session
 session_start();
+
 require_once "./config/utils.php";
 // $loggedInUser = $_SESSION[AUTH];
 $typeQuery = 'select * from types';

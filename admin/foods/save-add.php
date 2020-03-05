@@ -48,7 +48,7 @@ $insertFoodQuery = "insert into foods
 queryExecute($insertFoodQuery, true );
 $getTypeQuery = "select type from foods";
 $get = queryExecute($getTypeQuery,true);
-dd($get);
+
 
 $getFoodIdQuery = "select id from foods where name = '$name'";
 queryExecute($getFoodIdQuery);
