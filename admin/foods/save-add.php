@@ -3,8 +3,8 @@ session_start();
 include_once "../../config/utils.php";
 checkAdminLoggedIn();
 $name = trim($_POST['name']);
-$type = trim($_POST['type']);
-$place = trim($_POST['place']);
+$type = $_POST['type'];
+$place = $_POST['place'];
 
 $time_start = trim($_POST['time_start']);
 $time_end = trim($_POST['time_end']);
@@ -42,21 +42,36 @@ if($image['size'] > 0){
     $filename = "public/images/" . $filename;
 }
 $insertFoodQuery = "insert into foods 
-                          (name, image, type, place, price, time_start, time_end, description)
+                          (name, image, price, time_start, time_end, description)
                     values 
-                          ('$name', '$filename', '$type','$place', '$price', '$time_start', '$time_end', '$description')";
+                          ('$name', '$filename', '$price', '$time_start', '$time_end', '$description')";
 queryExecute($insertFoodQuery, true );
-$getTypeQuery = "select type from foods";
-$get = queryExecute($getTypeQuery,true);
 
-
+//lấy id của foods
+//thêm vào bảng food_type
+//thêm vào bảng food_place
 $getFoodIdQuery = "select id from foods where name = '$name'";
-queryExecute($getFoodIdQuery);
+$idFoodArray = queryExecute($getFoodIdQuery);
+$idFood = $idFoodArray[0];
 
-$insertFoodTypeQuery = "insert into food_type
+
+
+for ($i = 0; $i < count($type); $i++){
+    $insertFoodTypeQuery = "insert into food_type
                            (type_id, food_id)
                         values
-                            ('$type','$data'";
-$twoId = QueryExecute($insertFoodTypeQuery, true);
+                            ('$type[$i]','$idFood')";
+
+    queryExecute($insertFoodTypeQuery, false);
+}
+
+for ($i = 0; $i < count($place); $i++){
+    $insertFoodTypeQuery = "insert into food_place
+                           (place_id, food_id)
+                        values
+                            ('$place[$i]','$idFood')";
+    queryExecute($insertFoodTypeQuery, false);
+}
+
 header("location: " . ADMIN_URL . "foods/");
 die;
