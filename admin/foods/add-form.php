@@ -76,6 +76,7 @@ $foods = queryExecute($getIdQuery,true);
                                     <?php endforeach?>
                                 </select>
                             </div>
+
                             <div class="form-group">
                                 <label for="">Địa điểm</label><br>
                                 <select name="place[]" multiple="multiple" class="select2" data-placeholder="Chọn địa điểm" id="" style="width: 100%;">

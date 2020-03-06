@@ -54,14 +54,11 @@ $getFoodIdQuery = "select id from foods where name = '$name'";
 $idFoodArray = queryExecute($getFoodIdQuery);
 $idFood = $idFoodArray[0];
 
-
-
 for ($i = 0; $i < count($type); $i++){
     $insertFoodTypeQuery = "insert into food_type
                            (type_id, food_id)
                         values
                             ('$type[$i]','$idFood')";
-
     queryExecute($insertFoodTypeQuery, false);
 }
 

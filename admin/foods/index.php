@@ -11,26 +11,28 @@ $places = queryExecute($getPlaceQuery, true);
 $keyword = isset($_GET['keyword']) == true ? $_GET['keyword'] : "";
 
 $getFoodTypePlaceQuery = "select 
-                        f.*,
-                        t.name type_name,
-                        p.name place_name
-                        from foods f 
-                        join food_type tf
-                        on f.id = tf.food_id 
-                        join types t
-                        on t.id = tf.type_id
-                        join food_place pf
-                        on f.id = pf.food_id
-                        join places p
-                        on p.id = pf.place_id
-                        ";
+                            f.*,
+                            t.name type_name,
+                            p.name place_name
+                            from foods f 
+                            join food_type tf
+                            on f.id = tf.food_id 
+                            join types t
+                            on t.id = tf.type_id
+                            join food_place pf
+                            on f.id = pf.food_id
+                            join places p
+                            on p.id = pf.place_id";
 $foods = queryExecute($getFoodTypePlaceQuery, true);
+
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
     <?php include_once '../_share/style.php'; ?>
 </head>
+
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
@@ -46,16 +48,16 @@ $foods = queryExecute($getFoodTypePlaceQuery, true);
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">Quản trị foods</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="<?= ADMIN_URL ?>">Dashboard</a></li>
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <h1 class="m-0 text-dark">QUẢN TRỊ THỰC PHẨM</h1>
+                            </div><!-- /.col -->
+
+                        </div><!-- /.row -->
+                    </div>
+                </div>
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
@@ -69,23 +71,31 @@ $foods = queryExecute($getFoodTypePlaceQuery, true);
                         <!-- Filter  -->
                         <form action="" method="get">
                             <div class="form-row">
-                                <div class="form-group col-5">
-                                    <input type="text" value="<?= $keyword?>" class="form-control" name="keyword" placeholder="Nhập tên loại thực phẩm.">
+                                <div class="form-group col-4">
+                                    <input type="text" value="<?= $keyword ?>" class="form-control" name="keyword" placeholder="Nhập tên loại thực phẩm...">
                                 </div>
-                                <div class="form-group col-2">
-                                    <select name="role" class="form-control" >
+                                <div class="form-group col-3">
+                                    <select name="role" class="form-control select2">
                                         <option selected value="">Tất cả loại</option>
-                                        <?php foreach($types as $type): ?>
-                                            <option value="<?= $type['id'] ?>"><?= $type['name'] ?></option>
-                                        <?php endforeach;?>
+                                        <?php foreach ($types as $type) : ?>
+                                            <option <?php if ($food_type['type_id'] = $type['id']) {
+                                                echo "selected";
+                                            } ?> value="<?= $type['id'] ?>">
+                                                <?= $type['name'] ?>
+                                            </option>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <div class="form-group col-3">
-                                    <select name="role" class="form-control" >
+                                    <select name="role" class="form-control">
                                         <option selected value="">Tất cả địa điểm</option>
-                                        <?php foreach($places as $place): ?>
-                                            <option value="<?= $place['id'] ?>"><?= $place['name'] ?></option>
-                                        <?php endforeach;?>
+                                        <?php foreach ($places as $place) : ?>
+                                            <option <?php if ($food_place['place_id'] = $place['id']) {
+                                                echo "selected";
+                                            } ?> value="<?= $place['id'] ?>">
+                                                <?= $place['name'] ?>
+                                            </option>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <div class="form-group col-2">
@@ -94,49 +104,59 @@ $foods = queryExecute($getFoodTypePlaceQuery, true);
                             </div>
                         </form>
                     </div>
-                    <table class="table table-stripped">
-                        <thead>
-                        <th>ID</th>
-                        <th>Tên</th>
-                        <th>Loại</th>
-                        <th>Địa điểm</th>
-                        <th>Ảnh</th>
-                        <th>Giá</th>
-                        <th>Thời gian mở</th>
-                        <th>Thời gian đóng</th>
-                        <th>Nội dung</th>
-                        <th>
-                            <a href="<?= ADMIN_URL . 'foods/add-form.php'?>" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Thêm</a>
-                        </th>
-                        </thead>
-                        <tbody>
-                        <?php foreach ($foods as $food): ?>
-                            <tr>
-                                <td><?= $food['id']?></td>
-                                <td><?= $food['name']?></td>
-                                <td><?= $food['type_name']?></td>
-                                <td><?= $food['place_name']?></td>
-                                <td>
-                                    <div  style="width:30%">
-                                        <img class="img-fluid" src="<?= BASE_URL . $food['image']?>" alt="">
-                                    </div>
-                                </td>
-                                <td><?= $food['price']?></td>
-                                <td><?= $food['time_start']?></td>
-                                <td><?= $food['time_end']?></td>
-                                <td><?= $food['description']?></td>
-                                <td>
-                                    <a href="<?= ADMIN_URL . 'foods/edit-form.php?id=' . $food['id'] ?>" class="btn btn-sm btn-info">
-                                        <i class="fa fa-pencil-alt"></i>
-                                    </a>
-                                    <a href="<?= ADMIN_URL . 'foods/remove.php?id=' . $food['id'] ?>" class="btn-remove btn btn-sm btn-danger">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        <?php endforeach;?>
-                        </tbody>
-                    </table>
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <table id="example1" class="table table-bordered table-hover">
+                                    <thead>
+                                    <th>ID</th>
+                                    <th>Tên</th>
+                                    <th>Loại</th>
+                                    <th>Địa điểm</th>
+                                    <th style="width:350px;">Ảnh</th>
+                                    <th>Giá</th>
+                                    <th>Thời gian mở</th>
+                                    <th>Thời gian đóng</th>
+                                    <th>Nội dung</th>
+                                    <th>
+                                        <a href="<?= ADMIN_URL . 'foods/add-form.php' ?>" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Thêm</a>
+                                    </th>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach ($foods as $food) : ?>
+                                        <tr>
+                                            <td>
+                                                <?= $food['id'] ?>
+                                            </td>
+                                            <td><?= $food['name'] ?></td>
+                                            <td><?= $food['type_name'] ?></td>
+                                            <td><?= $food['place_name'] ?></td>
+                                            <td>
+                                                <div style="width:30%">
+                                                    <img class="img-fluid" src="<?= BASE_URL . $food['image'] ?>" alt="">
+                                                </div>
+                                            </td>
+                                            <td><?= $food['price'] ?></td>
+                                            <td><?= $food['time_start'] ?></td>
+                                            <td><?= $food['time_end'] ?></td>
+                                            <td><?= $food['description'] ?></td>
+                                            <td>
+                                                <a href="<?= ADMIN_URL . 'foods/edit-form.php?id=' . $food['id'] ?>" class="btn btn-sm btn-info">
+                                                    <i class="fa fa-pencil-alt"></i>
+                                                </a>
+                                                <a href="<?= ADMIN_URL . 'foods/remove.php?id=' . $food['id'] ?>" class="btn-remove btn btn-sm btn-danger">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
                 </div>
                 <!-- /.row -->
 
@@ -151,8 +171,8 @@ $foods = queryExecute($getFoodTypePlaceQuery, true);
 <!-- ./wrapper -->
 <?php include_once '../_share/script.php'; ?>
 <script>
-    $(document).ready(function(){
-        $('.btn-remove').on('click', function () {
+    $(document).ready(function() {
+        $('.btn-remove').on('click', function() {
             var redirectUrl = $(this).attr('href');
             Swal.fire({
                 title: 'Thông báo!',
@@ -169,16 +189,25 @@ $foods = queryExecute($getFoodTypePlaceQuery, true);
             });
             return false;
         });
-        <?php if(isset($_GET['msg'])):?>
+        <?php if (isset($_GET['msg'])) : ?>
         Swal.fire({
             position: 'bottom-end',
             icon: 'warning',
-            title: "<?= $_GET['msg'];?>",
+            title: "<?= $_GET['msg']; ?>",
             showConfirmButton: false,
             timer: 1500
         });
-        <?php endif;?>
+        <?php endif; ?>
+        $('.select2').select2()
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+    });
+    $("#example1").DataTable({
+        "searching": false,
     });
 </script>
 </body>
+
 </html>

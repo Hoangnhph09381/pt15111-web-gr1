@@ -12,30 +12,32 @@
                         Tìm kiếm
                     </a>
                     <div class="directify_fn_header_search_see_wrap one">
-                        <div class="header_search_see">
-                            <div class="selects">
-                                <div>
-                                    <input class="directify_fn_search_input" type="search" name="keyword" placeholder="Bạn đang tìm kiếm món ăn gì?" />
+                        <form action="" method="get">
+                            <div class="header_search_see">
+                                <div class="selects">
+                                    <div>
+                                        <input class="directify_fn_search_input" type="search" value="<?= $keyword ?>" name="keyword" placeholder="Bạn đang tìm kiếm món ăn gì?" />
+                                    </div>
+                                    <div>
+                                        <select class="directify_fn_select" name="typeSearch">
+                                            <option value="0">Tất Cả Các Thể Loại</option>
+                                            <?php foreach ($indextypes as $key => $type): ?>
+                                                <option value="<?= $type['id'] ?>"><?= $type['name'] ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <select class="directify_fn_select" name="placeSearch">
+                                            <option value="0">Tất Cả Các Địa Điểm</option>
+                                            <?php foreach ($indexplaces as $key => $place): ?>
+                                                <option value="<?= $place['id'] ?>"><?= $place['name'] ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div>
-                                    <select class="directify_fn_select">
-                                        <option value="all">Tất Cả Các Thể Loại</option>
-                                        <?php foreach ($types as $key => $type): ?>
-                                            <option value="<?= $type['id'] ?>"><?= $type['name'] ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div>
-                                    <select class="directify_fn_select">
-                                        <option value="all">Tất Cả Các Địa Điểm</option>
-                                        <?php foreach ($places as $key => $place): ?>
-                                            <option value="<?= $place['id'] ?>"><?= $place['name'] ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
+                                <input type="submit" class="btn btn-primary" value="Tìm kiếm">
                             </div>
-                            <a href="#"><img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/search.svg" alt="" /><span>Search</span></a>
-                        </div>
+                        </form>
                     </div>
                 </div>
                 <div class="directify_fn_header_nav_list">

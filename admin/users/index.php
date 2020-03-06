@@ -20,9 +20,9 @@ $getUsersQuery = "select
 
 if($keyword !== ""){
     $getUsersQuery .= " where (u.email like '%$keyword%' 
-                            or u.phone_number like '%$keyword%'  
-                            or u.name like '%$keyword%'  
-                            )
+                            or u.phone_number like '%$keyword%' 
+                            or u.name like '%$keyword%' 
+                            ) 
                       ";
     if($roleId !== false && $roleId !== ""){
         $getUsersQuery .= " and u.role_id = $roleId";
@@ -189,7 +189,7 @@ $users = queryExecute($getUsersQuery, true);
             timer: 1500
         });
         <?php endif;?>
-        $('.select2').select2()
+        $('.select2').select2();
 
         //Initialize Select2 Elements
         $('.select2bs4').select2({

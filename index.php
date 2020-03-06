@@ -4,15 +4,116 @@ session_start();
 
 require_once "./config/utils.php";
 // $loggedInUser = $_SESSION[AUTH];
+$keyword = isset($_GET['keyword']) == true? $_GET['keyword'] : "";
+$keyword2 = isset($_GET['keyword2']) == true? $_GET['keyword2'] : "";
+$typeId = isset($_GET['typeSearch']) == true ? $_GET['typeSearch'] : "";
+$placeId = isset($_GET['placeSearch']) == true ? $_GET['placeSearch'] : "";
+
 $typeQuery = 'select * from types';
-$types = queryExecute($typeQuery, true);
+$indextypes = queryExecute($typeQuery, true);
 // echo $loggedInUser['name'];
 
 $placeQuery = 'select * from places';
-$places = queryExecute($placeQuery, true);
+$indexplaces = queryExecute($placeQuery, true);
 
-$foodQuery = "select * from foods";
+$foodQuery = "select * from foods ORDER BY id DESC LIMIT 6";
+
+if ($keyword2 !== ""){
+    $foodQuery .= " where (name like '%$keyword2%')";
+}
+
+if ($keyword !== "" && $placeId !== "" && $typeId !== ""){
+    $foodQuery = "select * from foods join food_type  
+                                            on food_type.food_id = foods.id
+                                            join food_place
+										    on food_place.food_id = foods.id
+										    where (
+										    food_type.type_id = $typeId
+										    and food_place.place_id = $placeId
+										    and foods.name like '%$keyword%')";
+}
+
+if ($keyword == "" && $placeId !== "" && $typeId !== ""){
+    $foodQuery = "select * from foods join food_type  
+                                            on food_type.food_id = foods.id
+                                            join food_place
+										    on food_place.food_id = foods.id
+										    where (
+										    food_type.type_id = $typeId
+										    and food_place.place_id = $placeId)";
+}
+
+if ($keyword !== "" && $placeId == 0 && $typeId !== ""){
+    $foodQuery = "select * from foods join food_type  
+                                            on food_type.food_id = foods.id
+										    where (
+										    food_type.type_id = $typeId
+										    
+										    and foods.name like '%$keyword%')";
+}
+
+if ($keyword !== "" && $placeId !== "" && $typeId == 0){
+    $foodQuery = "select * from foods 
+                                            join food_place
+										    on food_place.food_id = foods.id
+										    where (
+                                            food_place.place_id = $placeId
+										    and foods.name like '%$keyword%')";
+}
+
+if ($keyword !== "" && $placeId == 0 && $typeId == 0){
+    $foodQuery = "select * from foods 
+										    where (
+										    
+										     foods.name like '%$keyword%')";
+}
+
+if ($keyword == "" && $placeId !== "" && $typeId == 0){
+    $foodQuery = "select * from foods 
+                                            join food_place
+										    on food_place.food_id = foods.id
+										    where (
+                                            food_place.place_id = $placeId )";
+}
+
+if ($keyword == "" && $placeId == 0 && $typeId !== ""){
+    $foodQuery = "select * from foods join food_type
+                                            on food_type.food_id = foods.id
+										    where (
+										    food_type.type_id = $typeId
+										    )";
+}
+
+if ($keyword == "" && $placeId == 0 && $typeId == 0){
+    $foodQuery = "select * from foods ORDER BY id DESC LIMIT 6";
+}
+
 $foods = queryExecute($foodQuery, true);
+//dd($foodQuery);
+
+$getFoodIdQuery = "select id from foods";
+$foodId = queryExecute($getFoodIdQuery, true);
+
+for ($i = 0; $i < count($foods); $i++) {
+    $getAddressQuery = "select p.id,
+						p.name
+						from food_place fp
+						join places p 
+						on fp.place_id = p.id
+						where fp.food_id = " . $foods[$i]['id'];
+    $places = queryExecute($getAddressQuery, true);
+    $foods[$i]['places'] = $places;
+
+    $getTypeQuery = "select t.id,
+							t.name
+					from food_type ft
+					join types t
+					on ft.type_id = t.id
+					where ft.food_id = 
+					" . $foods[$i]['id'];
+    $types = queryExecute($getTypeQuery, true);
+    $foods[$i]['types'] = $types;
+}
 ?>
 
 <!DOCTYPE html>
@@ -71,8 +172,10 @@ $foods = queryExecute($foodQuery, true);
                                         <span>Direct-Food sẽ giúp bạn khám phá các món ăn bạn muốn</span>
                                     </div>
                                     <div class="searching">
-                                        <input class="directify_fn_search_input" type="search" name="keyword" placeholder="Nhập tên món ăn bạn muốn tìm?" />
-                                        <a class="directify_fn_search_btn" href="#"><img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/search.svg" alt="" /><span>Tìm kiếm</span></a>
+                                        <form action="" method="get">
+                                            <input class="directify_fn_search_input" type="search" value="<?= $keyword2 ?>" name="keyword2" placeholder="Nhập tên món ăn bạn muốn tìm?" />
+                                            <input type="submit" class="directify_fn_search_btn" value="Tìm kiếm">
+                                        </form>
                                     </div>
                                     <div class="cat_single_wrap" data-hover-text="#fff" data-hover-bg="" data-hover-border="rgba(255,255,255,1)" data-skew="6" data-text-color="#fff" data-bg-color="" data-bg-opacity="" data-border-width="1" data-border-color="rgba(255,255,255,0.64)" >
                                         <div class="cat_single">
@@ -80,7 +183,7 @@ $foods = queryExecute($foodQuery, true);
                                                 <div class="overlay_color"></div>
                                             </div>
                                             <div class="cat_single_content">
-                                                <a href="#">
+                                                <a href="<?= BASE_URL . 'index.php' ?>">
                                                     <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/restaurant.svg" alt="" />
                                                     <span class="cat_title">Các Món Ăn</span>
                                                 </a>
@@ -91,7 +194,7 @@ $foods = queryExecute($foodQuery, true);
                                                 <div class="overlay_color"></div>
                                             </div>
                                             <div class="cat_single_content">
-                                                <a href="#">
+                                                <a href="<?= BASE_URL . 'index.php?place' ?>">
                                                     <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/hotel.svg" alt="" />
                                                     <span class="cat_title">Địa Điểm</span>
                                                 </a>
@@ -102,8 +205,8 @@ $foods = queryExecute($foodQuery, true);
                                                 <div class="overlay_color"></div>
                                             </div>
                                             <div class="cat_single_content">
-                                                <a href="#">
-                                                    <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/shopping.svg" alt="" />
+                                                <a href="<?= BASE_URL . 'index.php?type' ?>">
+                                                <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/shopping.svg" alt="" />
                                                     <span class="cat_title">Các Loại Món</span>
                                                 </a>
                                             </div>
@@ -113,8 +216,8 @@ $foods = queryExecute($foodQuery, true);
                                                 <div class="overlay_color"></div>
                                             </div>
                                             <div class="cat_single_content">
-                                                <a href="#">
-                                                    <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/gallery.svg" alt="" />
+                                                <a href="<?= BASE_URL . 'index.php?image' ?>">
+                                                <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/gallery.svg" alt="" />
                                                     <span class="cat_title">Thư Viện Ảnh</span>
                                                 </a>
                                             </div>
@@ -133,17 +236,11 @@ $foods = queryExecute($foodQuery, true);
                                     </div>
                                     <div class="clearfix"></div>
                                     <!-- #1 item -->
-                                    <div class="fdbox">
-                                        <?php foreach ($foods as $food):?>
+                                    <?php if(isset($_GET['type'])): ?>
+                                        <div class="fdbox">
+                                        <?php foreach ($indextypes as $key => $type):?>
                                             <div class="featured_box_wrap">
                                                 <div class="featured_box">
-                                                    <div class="featured_box_img">
-                                                        <img src="<?= BASE_URL.$food['image']?>" alt="" />
-                                                    </div>
-                                                    <div class="featured_box_price">
-                                                        <span class="text"><?= $food['price']?>VNĐ</span>
-                                                        <span class="after"></span>
-                                                    </div>
                                                     <div class="featured_box_info_wrap">
                                                         <div class="featured_box_info">
                                                             <div class="featured_box_like">
@@ -155,27 +252,14 @@ $foods = queryExecute($foodQuery, true);
                                                                 </div>
                                                             </div>
                                                             <div class="featured_box_title">
-                                                                <h3><a href="#"><?= $food['name']?></a></h3>
+                                                                <h3><a href="#"><?= $type['name']?></a></h3>
                                                             </div>
-                                                            <div class="directify_fn_rating" data-rating="4.2">
+                                                            <div class="directify_fn_rating" data-rating="1">
                                                                 <div class="behind">
                                                                     <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/review.svg" alt="" />
                                                                 </div>
                                                                 <div class="up">
                                                                     <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/review.svg" alt="" />
-                                                                </div>
-                                                                <div class="featured_box_preview">
-                                                                    <a href="#"><span>Preview</span></a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="featured_box_address">
-                                                                <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/placeholder.svg" alt="" />
-                                                                <span>147 W 43rd St New York, NY 10036</span>
-                                                            </div>
-                                                            <div class="featured_box_author_img">
-                                                                <div class="author_img">
-                                                                    <img src="<?= THEME_ASSET_URL ?>img/featured_listing/author1.jpg" alt="" />
-                                                                    <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/checked.svg" alt="" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -183,7 +267,97 @@ $foods = queryExecute($foodQuery, true);
                                                 </div>
                                             </div>
                                         <?php endforeach;?>
-                                    </div>
+                                        </div>
+                                    <?php elseif (isset($_GET['place'])): ?>
+                                        <div class="fdbox">
+                                            <?php foreach ($indexplaces as $key => $place):?>
+                                                <div class="featured_box_wrap">
+                                                    <div class="featured_box">
+                                                        <div class="featured_box_info_wrap">
+                                                            <div class="featured_box_info">
+                                                                <div class="featured_box_like">
+                                                                    <a href="#">
+                                                                        <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/bookmark.svg" alt="" />
+                                                                    </a>
+                                                                    <div class="featured_box_tooltip">
+                                                                        <span>Bookmark</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="featured_box_title">
+                                                                    <h3><a href="#"><?= $place['name']?></a></h3>
+                                                                </div>
+                                                                <div class="directify_fn_rating" data-rating="4.2">
+                                                                    <div class="behind">
+                                                                        <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/review.svg" alt="" />
+                                                                    </div>
+                                                                    <div class="up">
+                                                                        <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/review.svg" alt="" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php endforeach;?>
+                                        </div>
+                                    <?php elseif (isset($_GET['image'])): ?>
+                                        <div class="fdbox">
+                                            <?php foreach ($foods as $key => $food):?>
+                                                <div class="featured_box_wrap">
+                                                    <div class="featured_box">
+                                                        <div class="featured_box_img">
+                                                            <img style="width: 400px; height: 200px" src="<?= BASE_URL.$food['image']?>" alt="" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php endforeach;?>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="fdbox">
+                                            <?php foreach ($foods as $key => $food):?>
+                                                <div class="featured_box_wrap">
+                                                    <div class="featured_box">
+                                                        <div class="featured_box_img">
+                                                            <a href="detail.php?id=<?= $food['id'] ?>"><img style="width: 420px; height: 200px" src="<?= BASE_URL . $food['image'] ?>" alt="" /></a>
+                                                        </div>
+                                                        <div class="featured_box_price">
+                                                            <span class="text"><?= $food['price']?>VNĐ</span>
+                                                            <span class="after"></span>
+                                                        </div>
+                                                        <div class="featured_box_info_wrap">
+                                                            <div class="featured_box_info">
+                                                                <div class="featured_box_title">
+                                                                    <h3><a href="detail.php?id=<?= $food['id'] ?>"><?= $food['name'] ?></a></h3>
+                                                                    <i class="fas fa-hotdog nav-icon"></i>
+                                                                    <?php foreach ($food['types'] as $type) : ?>
+                                                                        <span><?= $type['name']  ?></span>
+                                                                    <?php endforeach ?>
+                                                                </div>
+                                                                <div class="directify_fn_rating" data-rating="4.2">
+                                                                    <div class="behind">
+                                                                        <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/review.svg" alt="" />
+                                                                    </div>
+                                                                    <div class="up">
+                                                                        <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/review.svg" alt="" />
+                                                                    </div>
+                                                                    <div class="featured_box_preview">
+                                                                        <a href="detail.php?id=<?= $food['id'] ?>"><span>Preview</span></a>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="featured_box_address">
+                                                                    <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/placeholder.svg" alt="" />
+                                                                    <span><?php foreach ($food['places'] as $place) : ?>
+                                                                            <?= $place['name'] ?>
+                                                                        <?php endforeach ?>
+																	</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php endforeach;?>
+                                        </div>
+                                    <?php endif; ?>
                                     <!-- /#1 item -->
                                 </div>
                             </div>
