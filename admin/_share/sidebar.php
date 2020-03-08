@@ -125,23 +125,6 @@
                 </li>
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
-                        <i class="fas fa-star-half-alt nav-icon"></i>
-                        <p>
-                            Đánh giá
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="<?= ADMIN_URL . 'ratings'?>" class="nav-link">
-                                <i class="fa fa-list-ol nav-icon"></i>
-                                <p>Danh sách</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
                         <i class="fas fa-comments nav-icon"></i>
                         <p>
                             Bình luận

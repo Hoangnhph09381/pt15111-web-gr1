@@ -227,7 +227,7 @@ for ($i = 0; $i < count($foods); $i++) {
                                                 <div class="overlay_color"></div>
                                             </div>
                                             <div class="cat_single_content">
-                                                <a href="#">
+                                                <a href="<?php echo BASE_URL . '404.php?404' ?>">
                                                     <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/service.svg" alt="" />
                                                     <span class="cat_title">Dịch Vụ</span>
                                                 </a>
@@ -244,7 +244,7 @@ for ($i = 0; $i < count($foods); $i++) {
                                                     <div class="featured_box_info_wrap">
                                                         <div class="featured_box_info">
                                                             <div class="featured_box_like">
-                                                                <a href="#">
+                                                                <a href="<?php echo BASE_URL . '404.php?404' ?>">
                                                                     <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/bookmark.svg" alt="" />
                                                                 </a>
                                                                 <div class="featured_box_tooltip">
@@ -252,7 +252,7 @@ for ($i = 0; $i < count($foods); $i++) {
                                                                 </div>
                                                             </div>
                                                             <div class="featured_box_title">
-                                                                <h3><a href="#"><?= $type['name']?></a></h3>
+                                                                <h3><a href="<?php echo BASE_URL . '404.php?404' ?>"><?= $type['name']?></a></h3>
                                                             </div>
                                                             <div class="directify_fn_rating" data-rating="1">
                                                                 <div class="behind">
@@ -276,7 +276,7 @@ for ($i = 0; $i < count($foods); $i++) {
                                                         <div class="featured_box_info_wrap">
                                                             <div class="featured_box_info">
                                                                 <div class="featured_box_like">
-                                                                    <a href="#">
+                                                                    <a href="<?php echo BASE_URL . '404.php?404' ?>">
                                                                         <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/bookmark.svg" alt="" />
                                                                     </a>
                                                                     <div class="featured_box_tooltip">
@@ -284,7 +284,7 @@ for ($i = 0; $i < count($foods); $i++) {
                                                                     </div>
                                                                 </div>
                                                                 <div class="featured_box_title">
-                                                                    <h3><a href="#"><?= $place['name']?></a></h3>
+                                                                    <h3><a href="<?php echo BASE_URL . '404.php?404' ?>"><?= $place['name']?></a></h3>
                                                                 </div>
                                                                 <div class="directify_fn_rating" data-rating="4.2">
                                                                     <div class="behind">
@@ -318,7 +318,7 @@ for ($i = 0; $i < count($foods); $i++) {
                                                 <div class="featured_box_wrap">
                                                     <div class="featured_box">
                                                         <div class="featured_box_img">
-                                                            <a href="detail.php?id=<?= $food['id'] ?>"><img style="width: 420px; height: 200px" src="<?= BASE_URL . $food['image'] ?>" alt="" /></a>
+                                                            <a href="detail.php?id=<?= $food['id'] ?>"><img style="width: 420px;" src="<?= BASE_URL . $food['image'] ?>" alt="" /></a>
                                                         </div>
                                                         <div class="featured_box_price">
                                                             <span class="text"><?= $food['price']?>VNĐ</span>
@@ -380,7 +380,7 @@ for ($i = 0; $i < count($foods); $i++) {
                             </div>
                             <ul class="fam_city tabHeader">
                                 <li>
-                                    <a href="#">
+                                    <a href="<?= BASE_URL . 'coming-soon.php?not' ?>">
                                         <div class="fam_city_wrap">
                                             <div class="number">
                                                 <span class="text">01</span>
@@ -402,7 +402,7 @@ for ($i = 0; $i < count($foods); $i++) {
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="<?= BASE_URL . 'coming-soon.php?not' ?>">
                                         <div class="fam_city_wrap">
                                             <div class="number">
                                                 <span class="text">02</span>
@@ -424,7 +424,7 @@ for ($i = 0; $i < count($foods); $i++) {
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="<?= BASE_URL . 'coming-soon.php?not' ?>">
                                         <div class="fam_city_wrap">
                                             <div class="number">
                                                 <span class="text">03</span>
@@ -446,7 +446,7 @@ for ($i = 0; $i < count($foods); $i++) {
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="<?= BASE_URL . 'coming-soon.php?not' ?>">
                                         <div class="fam_city_wrap">
                                             <div class="number">
                                                 <span class="text">04</span>
@@ -468,7 +468,7 @@ for ($i = 0; $i < count($foods); $i++) {
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="<?= BASE_URL . 'coming-soon.php?not' ?>">
                                         <div class="fam_city_wrap">
                                             <div class="number">
                                                 <span class="text">05</span>
@@ -490,7 +490,7 @@ for ($i = 0; $i < count($foods); $i++) {
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="<?= BASE_URL . 'coming-soon.php?not' ?>">
                                         <div class="fam_city_wrap">
                                             <div class="number">
                                                 <span class="text">06</span>
@@ -547,24 +547,24 @@ for ($i = 0; $i < count($foods); $i++) {
                                 <div class="exmblog_single">
                                     <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/open-book.svg" alt="" />
                                     <div class="title_holder">
-                                        <h3><a href="#">Trang web tốt nhất cho reviewer</a></h3>
-                                        <span class="title">Viết bài review cho món ăn bạn thích</span>
+                                        <h3>Trang web tốt nhất cho reviewer</h3>
+                                        <span class="title">Viết bài review cho món ăn bạn thích, hoặc bình luận cho các bài review khác</span>
                                         <span class="read_more"><a href="#">Read More</a><span class="date"> - April 01</span></span>
                                     </div>
                                 </div>
                                 <div class="exmblog_single">
                                     <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/open-book.svg" alt="" />
                                     <div class="title_holder">
-                                        <h3><a href="#">Tìm hiểu về các món ăn nổi tiếng</a></h3>
-                                        <span class="title">Cras aliquam sagittis urna in consectetur. Aenean felis lacus.</span>
+                                        <h3>Tìm hiểu về các món ăn nổi tiếng</h3>
+                                        <span class="title">Bạn muốn tìm hiểu về món ăn nổi tiếng mà bạn chưa ăn bao giờ??</span>
                                         <span class="read_more"><a href="#">Read More</a><span class="date"> - March 27</span></span>
                                     </div>
                                 </div>
                                 <div class="exmblog_single">
                                     <img class="svg" src="<?= THEME_ASSET_URL ?>img/svg/open-book.svg" alt="" />
                                     <div class="title_holder">
-                                        <h3><a href="#">Lời khuyên về những món ăn</a></h3>
-                                        <span class="title">Cras aliquam sagittis urna in consectetur. Aenean felis lacus.</span>
+                                        <h3>Những gợi ý về món ăn</h3>
+                                        <span class="title">Bạn đến 1 địa điểm du lịch và không biết nên ăn gì? Hãy ghé thăm chúng tôi</span>
                                         <span class="read_more"><a href="#">Read More</a><span class="date"> - January 18</span></span>
                                     </div>
                                 </div>
