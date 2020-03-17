@@ -89,7 +89,7 @@ if($user['id'] != $_SESSION[AUTH]['id'] && $user['role_id'] <= $_SESSION[AUTH]['
                                             <label for="">Ảnh đại diện</label>
                                         </div>
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" value="<?= $user['avatar'] ?>" name="avatar" onchange="encodeImageFileAsURL(this)">
+                                            <input type="file" class="custom-file-input" value="<?= $user['image'] ?>" name="avatar" onchange="encodeImageFileAsURL(this)">
                                             <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                                         </div>
                                     </div>
